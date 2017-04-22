@@ -1,1 +1,38 @@
-{     "devDependencies": {         "electron-lite": "kaizhu256/node-electron-lite#alpha",         "utility2": "kaizhu256/node-utility2#alpha"     },     "name":"npmdoc-password-hash-and-salt",     "homepage": "https://github.com/npmdoc/node-npmdoc-password-hash-and-salt",     "repository": {         "type": "git",         "url": "https://github.com/npmdoc/node-npmdoc-password-hash-and-salt.git"     },     "scripts": {         "build-ci": "utility2 shReadmeTest build_ci.sh"     },     "version": "0.0.1" }
+{
+    "author": "kai zhu <kaizhu256@gmail.com>",
+    "description": "#### api documentation for  [password-hash-and-salt (v0.1.4)](https://github.com/florianheinemann/password-hash-and-salt)  [![npm package](https://img.shields.io/npm/v/npmdoc-password-hash-and-salt.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-password-hash-and-salt) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-password-hash-and-salt.svg)](https://travis-ci.org/npmdoc/node-npmdoc-password-hash-and-salt)",
+    "devDependencies": {
+        "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "utility2": "kaizhu256/node-utility2#alpha"
+    },
+    "engines": {
+        "node": ">=4.0"
+    },
+    "homepage": "https://github.com/npmdoc/node-npmdoc-password-hash-and-salt",
+    "keywords": [
+        "documentation",
+        "password-hash-and-salt"
+    ],
+    "license": "MIT",
+    "main": "lib.npmdoc_password_hash_and_salt.js",
+    "name": "npmdoc-password-hash-and-salt",
+    "nameAlias": "npmdoc_password_hash_and_salt",
+    "nameOriginal": "npmdoc-password-hash-and-salt",
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/npmdoc/node-npmdoc-password-hash-and-salt.git"
+    },
+    "scripts": {
+        "build-ci": "utility2 shReadmeTest build_ci.sh",
+        "env": "env",
+        "heroku-postbuild": "npm install \"kaizhu256/node-utility2#alpha\" && utility2 shDeployHeroku",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "start": "PORT=${PORT:-8080} utility2 start test.js",
+        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
+    },
+    "version": "0.0.1"
+}
