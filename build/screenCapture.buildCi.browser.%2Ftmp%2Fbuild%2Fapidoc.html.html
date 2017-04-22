@@ -1,0 +1,152 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/florianheinemann/password-hash-and-salt">password-hash-and-salt (v0.1.4)</a>
+</h1>
+<h4>Simple, safe and straight-forward password hashing / salting for node.js</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.password-hash-and-salt">module password-hash-and-salt</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.password-hash-and-salt.password-hash-and-salt">
+            function <span class="apidocSignatureSpan"></span>password-hash-and-salt
+            <span class="apidocSignatureSpan">(password)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.password-hash-and-salt" id="apidoc.module.password-hash-and-salt">module password-hash-and-salt</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.password-hash-and-salt.password-hash-and-salt" id="apidoc.element.password-hash-and-salt.password-hash-and-salt">
+        function <span class="apidocSignatureSpan"></span>password-hash-and-salt
+        <span class="apidocSignatureSpan">(password)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">password-hash-and-salt = function (password) {
+	return {
+		hash: function(salt, callback) {
+			// Make salt optional
+			if(callback === undefined &amp;&amp; salt instanceof Function) {
+				callback = salt;
+				salt = undefined;
+			}
+
+			if(!password) {
+				return callback('No password provided')
+			}
+
+			if(typeof salt === 'string') {
+				salt = new Buffer(salt, 'hex');
+			}
+
+			var calcHash = function() {
+				crypto.pbkdf2(password, salt, iterations, 64, 'sha1', function(err, key) {
+					if(err)
+						return callback(err);
+					var res = 'pbkdf2$' + iterations +
+								'$' + key.toString('hex') +
+								'$' + salt.toString('hex');
+					callback(null, res);
+				})		
+			};
+
+			if(!salt) {
+				crypto.randomBytes(64, function(err, gensalt) {
+					if(err)
+						return callback(err);
+					salt = gensalt;
+					calcHash();
+				});		
+			} else {
+				calcHash();
+			}			
+		},
+
+		verifyAgainst: function(hashedPassword, callback) {
+			if(!hashedPassword || !password)
+				return callback(null, false);
+
+			var key = hashedPassword.split('$');
+			if(key.length !== 4 || !key[2] || !key[3])
+				return callback('Hash not formatted correctly');
+
+			if(key[0] !== 'pbkdf2' || key[1] !== iterations.toString())
+				return callback('Wrong algorithm and/or iterations');
+
+			this.hash(key[3], function(error, newHash) {
+				if(error)
+					return callback(error);
+				callback(null, newHash === hashedPassword);				
+			});	
+		}
+	};
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
